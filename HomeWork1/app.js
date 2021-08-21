@@ -10,20 +10,20 @@ const readDirPromise = util.promisify(fs.readdir);
 const readFilePromise = util.promisify(fs.readFile);
 const renameFSPromise = util.promisify(fs.rename);
 
-
-const onlyOneGender = (folderOne, folderTwo, gender) => {
-    readDirPromise(folderOne).then(files => {
-        files.forEach(file => {
-            readFilePromise(`${folderOne}/${file}`).then(data => {
-                const data2 = JSON.parse(data)
-                console.log("data2 ----> ",data2)
-                if (data2.gender === gender) {
-                    renameFSPromise(`${folderOne}/${file}`,`${folderTwo}/${file}`)
-                        .finally(() => console.log("Сортування за статтю завершено"))
-                }
-            })
-        })
-    });
+// When everything is async-await))
+const onlyOneGender = async (folderOne, folderTwo, gender) => {
+    const files = await readDirPromise(folderOne)
+    files.forEach(async file => {
+        try {
+            const data = await readFilePromise(path.join(folderOne, file))
+            const data2 = JSON.parse(data)
+            if (data2.gender === gender) {
+                await renameFSPromise(path.join(folderOne, file), path.join(folderTwo, file))
+            }
+        } catch (e) {
+            console.log("error",e)
+        }
+    },Error())
 }
 
 onlyOneGender(boysPath, girlsPath, female)
@@ -31,11 +31,31 @@ onlyOneGender(girlsPath, boysPath, male)
 
 
 
+// then time
+// const onlyOneGenderThen = (folderOne, folderTwo, gender) => {
+//     readDirPromise(folderOne).then(files => {
+//         files.forEach(file => {
+//             readFilePromise(path.join(folderOne,file)).then(data => {
+//                 // readFilePromise(`${folderOne}/${file}`).then(data => {
+//                 const data2 = JSON.parse(data)
+//                 console.log("data2 ----> ",data2)
+//                 if (data2.gender === gender) {
+//                     renameFSPromise(path.join(folderOne,file),path.join(folderTwo,file))
+//                         // renameFSPromise(`${folderOne}/${file}`,`${folderTwo}/${file}`)
+//                         .finally(() => console.log("Сортування за статтю завершено"))
+//                 }
+//             })
+//         })
+//     });
+// }
+//
+// onlyOneGenderThen(boysPath, girlsPath, female)
+// onlyOneGenderThen(girlsPath, boysPath, male)
 
 
 
 
-
+// before then
 // const onlyOneGender = (folderOne, folderTwo, gender) => {
 //     fs.readdir(folderOne, (err, files) => {
 //         if (err) {
