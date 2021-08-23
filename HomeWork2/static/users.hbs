@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body style="margin: 10px">
+    <h1>Users</h1>
+    <div style="display: flex; max-width: 1000px; flex-wrap: wrap">
+        <h2>{{userName}}</h2>
+        {{#each users}}
+            <div style="display: flex;flex-direction: column; width: 400px;padding: 15px;margin: 10px; background-color: aqua" >
+                <h2 style="display: inline-block">{{name}}</h2>
+                <h3 style="display: inline-block">{{age}}</h3>
+                <h3 style="display: inline-block">{{email}}</h3>
+                <a href="/users/{{email}}">Детальніше</a>
+            </div>
+        {{/each}}
+    </div>
+
+</body>
+</html>
