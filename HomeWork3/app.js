@@ -19,9 +19,10 @@ app.set('view engine', '.hbs');
 app.engine('.hbs', expressHbs({ defaultLayout: false }));
 app.set('views', staticPath);
 
-const { userRouter, navigationRoutes } = require('./routes');
+const { userRouter, navigationRoutes, userAuth } = require('./routes');
 
-app.use('/', userRouter);
+app.use('/users', userRouter);
+app.use('/auth', userAuth);
 app.use('/', navigationRoutes);
 
 app.listen(PORT, () => {

@@ -1,7 +1,1 @@
-[
-  {"name":"Vasia","email":"vasia@gmail.com","password":"qwerrty","age":"23"},
-  {"name":"Petia","email":"petia@gmail.com","password":"qwerrty","age":"33"},
-  {"name":"Olya","email":"olya@gmail.com","password":"qwerrty","age":"43"},
-  {"name":"Serhii","email":"sergio@gmail.com","password":"qwerrty","age":"33"},
-  {"name":"Serhii2","email":"sergio2@gmail.com","password":"qwerrty2","age":"34"}
-]
+[{"name":"Petia","email":"petia@gmail.com","password":"qwerrty","age":"33"},{"name":"Olya","email":"olya@gmail.com","password":"qwerrty","age":"43"},{"name":"Serhii","email":"sergio@gmail.com","password":"qwerrty","age":"33"},{"name":"vasia","email":"vasia@gmail.com","password":"vasia","age":"45"}]
