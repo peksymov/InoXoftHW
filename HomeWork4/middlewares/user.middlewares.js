@@ -1,30 +1,48 @@
 const ErrorHandler = require('../errors/ErrorHandler');
-const { UN_AUTHORIZED, BAD_REQUEST, NOT_FOUND } = require('../../HomeWork5/configs/request_handler.enum');
+const { UN_AUTHORIZED, BAD_REQUEST, NOT_FOUND } = require('../configs/request_handler.enum');
 const { User } = require('../database');
 const userValidators = require('../validators/user.validator');
 const passwordService = require('../services/password.services');
 
 module.exports = {
+    // eslint-disable-next-line complexity
     validationCases: (validCase) => (req, res, next) => {
         try {
             if (validCase === 'creation') {
                 const { error, value } = userValidators.createUserValidator.validate(req.body);
                 if (error) {
-                    throw new ErrorHandler(400, error.details[0].message);
+                    throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
                 }
                 req.body = value;
                 next();
             } else if (validCase === 'updating') {
                 const { error, value } = userValidators.updateUserValidator.validate(req.body);
                 if (error) {
-                    throw new ErrorHandler(400, error.details[0].message);
+                    throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
                 }
-                req.body = value;
+                const user_id = userValidators.idValidation.validate(req.params);
+                const newValue1 = user_id.value.user_id;
+                const newValue = { ...value, user_id: newValue1 };
+                req.body = newValue;
                 next();
             } else if (validCase === 'login') {
                 const { error, value } = userValidators.loginUserValidator.validate(req.body);
                 if (error) {
-                    throw new ErrorHandler(400, error.details[0].message);
+                    throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+                }
+                req.body = value;
+                next();
+            } else if (validCase === 'id') {
+                const { error, value } = userValidators.idValidation.validate(req.params);
+                if (error) {
+                    throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+                }
+                req.body = value;
+                next();
+            } else if (validCase === 'email') {
+                const { error, value } = userValidators.emailValidation.validate(req.params);
+                if (error) {
+                    throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
                 }
                 req.body = value;
                 next();
@@ -33,12 +51,35 @@ module.exports = {
             next(e);
         }
     },
+    // idValidation: (req, res, next) => {
+    //     try {
+    //         const { error, value } = userValidators.idValidation.validate(req.params);
+    //         if (error) {
+    //             throw new ErrorHandler(400, error.details[0].message);
+    //         }
+    //         req.body = value;
+    //         next();
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // },
+    // emailValidation: (req, res, next) => {
+    //     try {
+    //         const { error, value } = userValidators.emailValidation.validate(req.params);
+    //         if (error) {
+    //             throw new ErrorHandler(400, error.details[0].message);
+    //         }
+    //         req.body = value;
+    //         next();
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // },
     isEmailAlreadyExist: async (req, res, next) => {
         try {
+            // eslint-disable-next-line no-unused-vars
             const { email, name, password } = req.body;
             const user = await User.findOne({ email });
-            // const user = await User.findOne({ email }).
-            // select('+password').lean(); // один из способов убрать password из возврата но самій лучший
             if (user) {
                 throw new ErrorHandler(BAD_REQUEST, 'Email already exist. Try to login');
             }
@@ -66,7 +107,7 @@ module.exports = {
     },
     isUserEmailCorrect: async (req, res, next) => {
         try {
-            const { email } = req.params;
+            const { email } = req.body;
             const user = await User.findOne({ email });
             if (!user) {
                 throw new ErrorHandler(NOT_FOUND, 'не нашел юзера в isUserEmailCorrect');
@@ -80,11 +121,10 @@ module.exports = {
     },
     isUserByIdPresent: async (req, res, next) => {
         try {
-            const { user_id } = req.params;
             const something = req.body;
-            const user = await User.findById(user_id);
+            const user = await User.findById(something.user_id);
             if (!user) {
-                throw new ErrorHandler(NOT_FOUND, 'не нашел юзера в isUserEmailCorrect');
+                throw new ErrorHandler(NOT_FOUND, 'не нашел юзера в isUserByIdPresent');
             }
             req.user = user;
             next();

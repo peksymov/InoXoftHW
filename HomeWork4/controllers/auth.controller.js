@@ -1,4 +1,4 @@
-const { CREATED } = require('../../HomeWork5/configs/request_handler.enum');
+const { CREATED, SUCCESS } = require('../configs/request_handler.enum');
 const { User } = require('../database');
 const userUtil = require('../utils/user.util');
 
@@ -11,7 +11,8 @@ module.exports = {
             const hashPassword = await passwordService.hash(password);
             const user = await User.create({ ...req.body, password: hashPassword });
             const normalizedUser = userUtil.userNormalizator(user);
-            await res.status(CREATED).json(normalizedUser);
+            // await res.json(normalizedUser);
+            await res.status(CREATED).json({ message: 'Successful creation', data: normalizedUser });
 
             // console.log("createUser",req.body)
             // const user = await User.create(req.body);
@@ -22,7 +23,8 @@ module.exports = {
     },
     userAuth: async (req, res, next) => {
         try {
-            await res.json('Success Login');
+            // await res.json('Success Login');
+            await res.status(SUCCESS).json('Success Login!!!!!');
         } catch (e) {
             next(e);
         }

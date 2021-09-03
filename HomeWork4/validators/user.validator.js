@@ -45,9 +45,18 @@ const updateUserValidator = Joi.object({
             'car', { is: true, then: Joi.required() }
         )
 });
+const idValidation = Joi.object({
+    user_id: Joi.string().min(24).max(24)
+});
+const emailValidation = Joi.object({
+    email: Joi.string().email(EMAIL_REGEXP).trim().lowercase()
+        .required()
+});
 
 module.exports = {
     createUserValidator,
     updateUserValidator,
-    loginUserValidator
+    loginUserValidator,
+    idValidation,
+    emailValidation
 };

@@ -18,14 +18,11 @@ app.use('/auth', authRouter);
 app.use('/id', idRouter);
 
 app.listen(PORT, () => {
-    console.log('PORT PORT PORT');
+    // console.log('PORT PORT PORT');
 });
 
 // eslint-disable-next-line no-unused-vars
 function _mainErrorHandler(err, req, res, next) {
-    // const isCastError = ~err.message.indexOf('Cast to ObjectId failed')
-    // res.status(err.status || 500 || isCastError)
-    //     .json({ message: err.message });
     res
         .status(err.status || 500)
         .json({
