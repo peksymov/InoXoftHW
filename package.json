@@ -4,12 +4,15 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
+    "email-templates": "^8.0.8",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.3",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.2",
-    "pm2": "^5.1.1"
+    "nodemailer": "^6.6.3",
+    "pm2": "^5.1.1",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
@@ -21,7 +24,8 @@
     "husky": "4.3.0",
     "lint-staged": "^11.1.2",
     "mongodb": "^4.1.1",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "@types/nodemailer": "^6.4.4"
   },
   "lint-staged": {
     "*.js": [
